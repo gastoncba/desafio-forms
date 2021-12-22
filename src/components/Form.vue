@@ -61,6 +61,23 @@
     </v-btn>
 
     </v-form>
+
+    <v-snackbar
+      v-model="snackbar"
+    >
+      Se agrego la película
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
 </v-container>
 </template>
 
@@ -72,6 +89,7 @@
         data() {
             return {
                 valid: true,
+                snackbar: false,
                 name: '',
                 nameRules: [
                     v => !!v || 'El nombre de la pelicula',
@@ -139,7 +157,9 @@
 
       agregar(movie) {
           axios.post('https://61c0e99533f24c0017823689.mockapi.io/movies', movie)
-          .then((response) => console.log(response.data))
+          .then((response) => {
+                console.log(response.data) 
+                this.snackbar = true})
           .catch((error) => console.log(error))
       }
     }, 
