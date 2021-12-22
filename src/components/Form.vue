@@ -55,18 +55,19 @@
     <v-btn color="error" class="mt-4 ml-4" @click="reset()">
       Borrar todo
     </v-btn>
+    
+    <v-btn color="primary" class="mt-4 ml-4" @click="verPeliculasDisponibles()">
+        ver Películas 
+    </v-btn>
 
     </v-form>
-    <div v-if="hayPeliculas()" class="mt-8">
-        <h3>Tus Películas</h3>
-        <Table :headers="headers" :items="movies"  class="mt-2"/>
-    </div>
 </v-container>
 </template>
 
 <script>
     //los tipos de inputs con los que se trabajan aca son text-field, text-area, select y checkbox. 
-    import Table from '../components/Table.vue'
+    
+    import axios from 'axios'
     export default {
         data() {
             return {
@@ -99,18 +100,6 @@
                 check: '', 
                 checkRules: [
                     v => !!v || 'Acepte los términos'
-                ],
-
-                movies: [
-                
-                ],
-
-                headers: [
-                    {text: 'Nombre', align: 'start', value: 'name'},
-                    {text: 'Descripción', align: 'start', value: 'desc'},
-                    {text: 'Genero', align: 'start', value: 'genre'},
-                    {text: 'Duración', align: 'start', value: 'duration'},
-                    {text: 'Fecha de estreno', align: 'start', value: 'date'}
                 ], 
                 genres: [
                     'Ciencia Ficción', 
@@ -127,7 +116,6 @@
     methods: {
         validate () {
         if(this.$refs.form.validate()) {
-
         const newMovie = {
             name:  this.name,
             desc: this.desc, 
@@ -135,7 +123,8 @@
             duration: this.duration,
             date: this.date
         }
-        this.movies.push(newMovie)
+        
+        this.agregar(newMovie)
         this.$refs.form.reset()
         }
       }, 
@@ -143,14 +132,17 @@
       reset() {
           this.$refs.form.reset()
       }, 
+      
+      verPeliculasDisponibles() {
+          this.$router.push('/movies')
+      },
 
-      hayPeliculas() {
-          return this.movies.length != 0
+      agregar(movie) {
+          axios.post('https://61c0e99533f24c0017823689.mockapi.io/movies', movie)
+          .then((response) => console.log(response.data))
+          .catch((error) => console.log(error))
       }
     }, 
-    components: {
-        Table,
-    },
 }
 
 </script>

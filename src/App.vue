@@ -1,21 +1,15 @@
 <template>
   <v-app>
-    <Form />
+    <router-view />
   </v-app>
 </template>
 
 <script>
-import Form from './components/Form.vue'
+  export default {
 
-export default {
-  name: 'App',
-
-  components: {
-    Form
-  },
-
-  data: () => ({
-    //
-  }),
-};
+  }
 </script>
+
+<style scoped>
+
+</style>
